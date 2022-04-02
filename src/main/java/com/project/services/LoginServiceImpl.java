@@ -41,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
                 .build();
         tokenRepository.save(token);
         return TokenDto.from(token);
-      } throw new IllegalArgumentException("Incorrect login or password");
-    } throw new IllegalArgumentException("Incorrect login or password");
+      } throw new IllegalArgumentException("Incorrect login or password!");
+    } throw new IllegalArgumentException("Incorrect login or password!");
   }
 }
