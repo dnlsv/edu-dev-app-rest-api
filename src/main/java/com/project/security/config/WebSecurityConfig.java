@@ -1,5 +1,6 @@
 package com.project.security.config;
 
+import com.project.security.filters.CorsFilter;
 import com.project.security.filters.TokenAuthenticationFilter;
 import com.project.security.provider.TokenAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @ComponentScan("com.project")
@@ -19,14 +21,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private TokenAuthenticationProvider tokenAuthenticationProvider;
 
+  @Autowired
+  private CorsFilter corsFilter;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+            .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
             .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
             .authenticationProvider(tokenAuthenticationProvider)
             .authorizeRequests()
             .antMatchers("/login", "/registration").permitAll()
             .anyRequest().authenticated();
-    http.cors().and().csrf().disable();
+    http.csrf().disable();
   }
 }
