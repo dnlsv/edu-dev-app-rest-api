@@ -3,7 +3,7 @@ package com.project.services;
 import com.project.forms.UserForm;
 import com.project.models.State;
 import com.project.models.User;
-import com.project.repositories.UserRepository;
+import com.project.repositories.UsersRepository;
 import com.project.transfer.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +15,14 @@ import java.util.Optional;
 public class UserServiceimpl implements UserService {
 
   @Autowired
-  private UserRepository userRepository;
+  private UsersRepository usersRepository;
 
   @Autowired
   private PasswordEncoder passwordEncoder;
 
   @Override
   public UserDto addUser(UserForm userForm) {
-    Optional<User> userCandidate = userRepository.findOneByLogin(userForm.getLogin());
+    Optional<User> userCandidate = usersRepository.findOneByLogin(userForm.getLogin());
 
     if (userCandidate.isEmpty()) {
       String hashPassword = passwordEncoder.encode(userForm.getPassword());
@@ -35,7 +35,7 @@ public class UserServiceimpl implements UserService {
               .state(State.ACTIVE)
               .build();
 
-      userRepository.save(user);
+      usersRepository.save(user);
       return UserDto.from(user);
     } throw new IllegalArgumentException("Login already exists!");
   }
