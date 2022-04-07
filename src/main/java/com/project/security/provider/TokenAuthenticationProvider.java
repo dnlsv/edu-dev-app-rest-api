@@ -23,7 +23,7 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
   private UserDetailsService userDetailsService;
 
   @Override
-  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+  public Authentication authenticate(Authentication authentication) {
     TokenAuthentication tokenAuthentication = (TokenAuthentication)authentication;
     Optional<Token> tokenCandidate = tokensRepository.findOneByValue(tokenAuthentication.getName());
 

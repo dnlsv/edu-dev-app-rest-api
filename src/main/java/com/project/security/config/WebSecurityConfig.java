@@ -17,16 +17,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   private TokenAuthenticationFilter tokenAuthenticationFilter;
 
   @Autowired
-  private TokenAuthenticationProvider authenticationProvider;
+  private TokenAuthenticationProvider tokenAuthenticationProvider;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.
-            addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
-            .antMatcher("/**")
-            .authenticationProvider(authenticationProvider)
+    http
+            .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
+            .authenticationProvider(tokenAuthenticationProvider)
             .authorizeRequests()
-            .antMatchers("/**").authenticated()
-            .antMatchers("/login", "/registration").permitAll();
-    http.csrf().disable();
+            .antMatchers("/login", "/registration").permitAll()
+            .anyRequest().authenticated();
+    http.cors().and().csrf().disable();
   }
 }

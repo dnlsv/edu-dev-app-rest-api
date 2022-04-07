@@ -19,7 +19,7 @@ public class TokenAuthenticationFilter implements Filter {
     TokenAuthentication tokenAuthentication = TokenAuthentication.builder().token(token).build();
 
     if (token == null) {
-      tokenAuthentication.setAuthenticated(false);
+      SecurityContextHolder.clearContext();
     } else {
       SecurityContextHolder.getContext().setAuthentication(tokenAuthentication);
     }
