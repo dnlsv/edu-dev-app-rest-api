@@ -3,9 +3,9 @@ package com.project.controllers;
 import com.project.forms.DeleteForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
-import com.project.models.User;
 import com.project.services.UserService;
 import com.project.transfer.UserDto;
+import com.project.transfer.UserLogDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +17,13 @@ public class UsersController {
   private UserService userService;
 
   @PostMapping("/registration")
-  public ResponseEntity<UserDto> addUser(@RequestBody UserForm userForm) {
-    return ResponseEntity.ok(userService.addUser(userForm));
+  public ResponseEntity<UserLogDto> addUser(@RequestBody UserForm userForm) {
+    return ResponseEntity.ok(UserLogDto.from(userService.addUser(userForm)));
+  }
+
+  @GetMapping("/profile/get-user")
+  public ResponseEntity<UserDto> getUser(@RequestParam String login) {
+    return ResponseEntity.ok(UserDto.from(userService.getUser(login)));
   }
 
   @DeleteMapping("/profile/delete-user")
@@ -28,8 +33,7 @@ public class UsersController {
   }
 
   @PutMapping("profile/edit-user")
-  public ResponseEntity<Object> editUser(@RequestBody EditForm editForm) {
-    userService.editUser(editForm);
-    return ResponseEntity.ok().build();
+  public ResponseEntity<UserLogDto> editUser(@RequestBody EditForm editForm) {
+    return ResponseEntity.ok(UserLogDto.from(userService.editUser(editForm)));
   }
 }

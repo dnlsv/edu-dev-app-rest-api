@@ -8,9 +8,15 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserDto {
 
+  private String firstName;
+
+  private String lastName;
+
+  private int age;
+
   private String login;
 
   public static UserDto from(User user) {
-    return new UserDto(user.getLogin());
+    return new UserDto(user.getFirstName(), user.getLastName(), user.getAge(), user.getLogin());
   }
 }

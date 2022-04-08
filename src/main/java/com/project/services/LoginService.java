@@ -1,9 +1,9 @@
 package com.project.services;
 
 import com.project.forms.LoginForm;
-import com.project.transfer.TokenDto;
+import com.project.models.Token;
 
 public interface LoginService {
 
-  TokenDto login(LoginForm loginForm);
+  Token login(LoginForm loginForm);
 }

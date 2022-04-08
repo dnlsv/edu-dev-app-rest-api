@@ -5,7 +5,6 @@ import com.project.models.Token;
 import com.project.models.User;
 import com.project.repositories.TokensRepository;
 import com.project.repositories.UsersRepository;
-import com.project.transfer.TokenDto;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +26,7 @@ public class LoginServiceImpl implements LoginService {
   private PasswordEncoder passwordEncoder;
 
   @Override
-  public TokenDto login(LoginForm loginForm) {
+  public Token login(LoginForm loginForm) {
     Optional<User> userCandidate = usersRepository.findOneByLogin(loginForm.getLogin());
 
     if (userCandidate.isPresent()) {
@@ -40,7 +39,7 @@ public class LoginServiceImpl implements LoginService {
                 .value(RandomStringUtils.random(10, true, true))
                 .build();
         tokensRepository.save(token);
-        return TokenDto.from(token);
+        return token;
       } throw new IllegalArgumentException("Incorrect login or password!");
     } throw new IllegalArgumentException("Incorrect login or password!");
   }

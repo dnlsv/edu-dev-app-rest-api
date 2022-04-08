@@ -8,7 +8,6 @@ import com.project.models.Token;
 import com.project.models.User;
 import com.project.repositories.TokensRepository;
 import com.project.repositories.UsersRepository;
-import com.project.transfer.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,7 @@ public class UserServiceimpl implements UserService {
   private PasswordEncoder passwordEncoder;
 
   @Override
-  public UserDto addUser(UserForm userForm) {
+  public User addUser(UserForm userForm) {
     Optional<User> userCandidate = usersRepository.findOneByLogin(userForm.getLogin());
 
     if (userCandidate.isEmpty()) {
@@ -38,14 +37,24 @@ public class UserServiceimpl implements UserService {
       User user = User.builder()
               .firstName(userForm.getFirstName())
               .lastName(userForm.getLastName())
+              .age(userForm.getAge())
               .login(userForm.getLogin())
               .hashPassword(hashPassword)
               .state(State.ACTIVE)
               .build();
 
       usersRepository.save(user);
-      return UserDto.from(user);
+      return user;
     } throw new IllegalArgumentException("Login already exists!");
+  }
+
+  @Override
+  public User getUser(String login) {
+    Optional<User> userCandidate = usersRepository.findOneByLogin(login);
+
+    if (userCandidate.isPresent()) {
+      return userCandidate.get();
+    } else throw new IllegalArgumentException("User not found!");
   }
 
   @Override
@@ -62,7 +71,7 @@ public class UserServiceimpl implements UserService {
   }
 
   @Override
-  public void editUser(EditForm editForm) {
+  public User editUser(EditForm editForm) {
     Optional<User> userCandidate = usersRepository.findOneByLogin(editForm.getOldLogin());
 
     if (userCandidate.isPresent()) {
@@ -72,12 +81,14 @@ public class UserServiceimpl implements UserService {
               .id(user.getId())
               .firstName(editForm.getFirstName())
               .lastName(editForm.getLastName())
+              .age(editForm.getAge())
               .login(editForm.getNewLogin())
               .hashPassword(hashPassword)
               .state(user.getState())
               .build();
 
       usersRepository.save(updatedUser);
+      return updatedUser;
     } else throw new IllegalArgumentException("User not found!");
   }
 }

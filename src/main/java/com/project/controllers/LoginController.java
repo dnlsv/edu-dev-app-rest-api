@@ -17,6 +17,6 @@ public class LoginController {
 
   @PostMapping("/login")
   public ResponseEntity<TokenDto> login(@RequestBody LoginForm loginForm) {
-    return ResponseEntity.ok(loginService.login(loginForm));
+    return ResponseEntity.ok(TokenDto.from(loginService.login(loginForm)));
   }
 }

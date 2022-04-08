@@ -9,6 +9,8 @@ public class UserForm {
 
   private String lastName;
 
+  private int age;
+
   private String login;
 
   private String password;

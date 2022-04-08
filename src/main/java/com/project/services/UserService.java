@@ -3,11 +3,12 @@ package com.project.services;
 import com.project.forms.DeleteForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
-import com.project.transfer.UserDto;
+import com.project.models.User;
 
 public interface UserService {
 
-  UserDto addUser(UserForm userForm);
+  User addUser(UserForm userForm);
+  User getUser(String login);
   void deleteUser(DeleteForm deleteForm);
-  void editUser(EditForm editForm);
+  User editUser(EditForm editForm);
 }

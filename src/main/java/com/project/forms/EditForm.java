@@ -11,6 +11,8 @@ public class EditForm {
 
   private String lastName;
 
+  private int age;
+
   private String newLogin;
 
   private String password;

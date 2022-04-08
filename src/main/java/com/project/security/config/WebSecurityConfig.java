@@ -1,6 +1,7 @@
 package com.project.security.config;
 
 import com.project.security.filters.CorsFilter;
+import com.project.security.filters.ExceptionFilter;
 import com.project.security.filters.TokenAuthenticationFilter;
 import com.project.security.provider.TokenAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private CorsFilter corsFilter;
 
+  @Autowired
+  private ExceptionFilter exceptionFilter;
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+            .addFilterBefore(exceptionFilter, ChannelProcessingFilter.class)
             .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
             .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
             .authenticationProvider(tokenAuthenticationProvider)

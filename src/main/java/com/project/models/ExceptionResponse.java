@@ -2,12 +2,13 @@ package com.project.models;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class ExceptionBody {
+public class ExceptionResponse {
 
-  private int status;
+  private HttpStatus status;
 
   private String message;
 }
