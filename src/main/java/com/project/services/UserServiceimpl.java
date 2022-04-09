@@ -1,5 +1,6 @@
 package com.project.services;
 
+import com.project.forms.ChangePasswordForm;
 import com.project.forms.DeleteForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
@@ -45,7 +46,7 @@ public class UserServiceimpl implements UserService {
 
       usersRepository.save(user);
       return user;
-    } throw new IllegalArgumentException("Login already exists!");
+    } else throw new IllegalArgumentException("Login already exists!");
   }
 
   @Override
@@ -67,7 +68,7 @@ public class UserServiceimpl implements UserService {
       tokensRepository.deleteAll(oldTokens);
 
       usersRepository.delete(user);
-    } throw new IllegalArgumentException("User not found!");
+    } else throw new IllegalArgumentException("User not found!");
   }
 
   @Override
@@ -75,20 +76,36 @@ public class UserServiceimpl implements UserService {
     Optional<User> userCandidate = usersRepository.findOneByLogin(editForm.getOldLogin());
 
     if (userCandidate.isPresent()) {
-      String hashPassword = passwordEncoder.encode(editForm.getPassword());
-      User user = userCandidate.get();
-      User updatedUser = User.builder()
-              .id(user.getId())
-              .firstName(editForm.getFirstName())
-              .lastName(editForm.getLastName())
-              .age(editForm.getAge())
-              .login(editForm.getNewLogin())
-              .hashPassword(hashPassword)
-              .state(user.getState())
-              .build();
+      if (usersRepository.findOneByLogin(editForm.getNewLogin()).isEmpty() ||
+              editForm.getNewLogin().equals(editForm.getOldLogin())) {
+        User user = userCandidate.get();
+        User updatedUser = User.builder()
+                .id(user.getId())
+                .firstName(editForm.getFirstName())
+                .lastName(editForm.getLastName())
+                .age(editForm.getAge())
+                .login(editForm.getNewLogin())
+                .hashPassword(user.getHashPassword())
+                .state(user.getState())
+                .build();
 
-      usersRepository.save(updatedUser);
-      return updatedUser;
+        usersRepository.save(updatedUser);
+        return updatedUser;
+      } else throw new IllegalArgumentException("Login already exists!");
+    } else throw new IllegalArgumentException("User not found!");
+  }
+
+  @Override
+  public void changePassword(ChangePasswordForm changePasswordForm) {
+    Optional<User> userCandidate = usersRepository.findOneByLogin(changePasswordForm.getLogin());
+
+    if (userCandidate.isPresent()) {
+      User user = userCandidate.get();
+
+      String hashPassword = passwordEncoder.encode(changePasswordForm.getPassword());
+      user.setHashPassword(hashPassword);
+
+      usersRepository.save(user);
     } else throw new IllegalArgumentException("User not found!");
   }
 }

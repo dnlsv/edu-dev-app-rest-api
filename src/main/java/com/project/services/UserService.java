@@ -1,5 +1,6 @@
 package com.project.services;
 
+import com.project.forms.ChangePasswordForm;
 import com.project.forms.DeleteForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
@@ -11,4 +12,5 @@ public interface UserService {
   User getUser(String login);
   void deleteUser(DeleteForm deleteForm);
   User editUser(EditForm editForm);
+  void changePassword(ChangePasswordForm changePasswordForm);
 }

@@ -1,5 +1,6 @@
 package com.project.controllers;
 
+import com.project.forms.ChangePasswordForm;
 import com.project.forms.DeleteForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
@@ -35,5 +36,11 @@ public class UsersController {
   @PutMapping("profile/edit-user")
   public ResponseEntity<UserLogDto> editUser(@RequestBody EditForm editForm) {
     return ResponseEntity.ok(UserLogDto.from(userService.editUser(editForm)));
+  }
+
+  @PutMapping("profile/change-password")
+  public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordForm changePasswordForm) {
+    userService.changePassword(changePasswordForm);
+    return ResponseEntity.ok().build();
   }
 }
