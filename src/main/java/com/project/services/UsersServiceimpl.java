@@ -1,23 +1,23 @@
 package com.project.services;
 
 import com.project.forms.ChangePasswordForm;
-import com.project.forms.DeleteForm;
+import com.project.forms.UniqueForm;
 import com.project.forms.EditForm;
 import com.project.forms.UserForm;
+import com.project.models.Progress;
 import com.project.models.State;
-import com.project.models.Token;
 import com.project.models.User;
+import com.project.repositories.ProgressRepository;
 import com.project.repositories.TokensRepository;
 import com.project.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceimpl implements UserService {
+public class UsersServiceimpl implements UsersService {
 
   @Autowired
   private UsersRepository usersRepository;
@@ -26,7 +26,14 @@ public class UserServiceimpl implements UserService {
   private TokensRepository tokensRepository;
 
   @Autowired
+  ProgressRepository progressRepository;
+
+  @Autowired
   private PasswordEncoder passwordEncoder;
+
+  private final int INITIAL_LEVEL = 1;
+  private final int INITIAL_STARS = 0;
+  private final int INITIAL_TASKS = 0;
 
   @Override
   public User addUser(UserForm userForm) {
@@ -44,7 +51,15 @@ public class UserServiceimpl implements UserService {
               .state(State.ACTIVE)
               .build();
 
+      Progress progress = Progress.builder()
+              .level(INITIAL_LEVEL)
+              .stars(INITIAL_STARS)
+              .completedTasks(INITIAL_TASKS)
+              .user(user)
+              .build();
+
       usersRepository.save(user);
+      progressRepository.save(progress);
       return user;
     } else throw new IllegalArgumentException("Login already exists!");
   }
@@ -59,13 +74,13 @@ public class UserServiceimpl implements UserService {
   }
 
   @Override
-  public void deleteUser(DeleteForm deleteForm) {
-    Optional<User> userCandidate = usersRepository.findOneByLogin(deleteForm.getLogin());
+  public void deleteUser(UniqueForm uniqueForm) {
+    Optional<User> userCandidate = usersRepository.findOneByLogin(uniqueForm.getLogin());
 
     if (userCandidate.isPresent()) {
       User user = userCandidate.get();
-      List<Token> oldTokens = tokensRepository.findAllByUser(user);
-      tokensRepository.deleteAll(oldTokens);
+//      List<Token> oldTokens = tokensRepository.findAllByUser(user);
+//      tokensRepository.deleteAll(oldTokens);
 
       usersRepository.delete(user);
     } else throw new IllegalArgumentException("User not found!");

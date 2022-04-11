@@ -8,35 +8,26 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-public class User {
+public class Progress {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  private String firstName;
+  private int level;
 
-  private String lastName;
+  private int stars;
 
-  private int age;
+  private int completedTasks;
 
-  private String login;
-
-  private String hashPassword;
-
-  @Enumerated(value = EnumType.STRING)
-  private State state;
-
-  @OneToMany(mappedBy = "user")
-  private List<Token> tokens;
-
-  @OneToOne(mappedBy = "user")
-  private Progress progress;
+  @OneToOne
+  @JoinColumn(name = "user_id")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private User user;
 }
