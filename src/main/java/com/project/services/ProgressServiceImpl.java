@@ -1,7 +1,6 @@
 package com.project.services;
 
 import com.project.forms.ProgressForm;
-import com.project.forms.UniqueForm;
 import com.project.models.Progress;
 import com.project.models.User;
 import com.project.repositories.ProgressRepository;
@@ -35,6 +34,7 @@ public class ProgressServiceImpl implements ProgressService{
         int stars = progress.getStars() + progressForm.getStars();
         if (stars == STARS_TO_LEVEL_UP) {
           level++;
+          stars = 0;
         }
         int completedTasks = progress.getCompletedTasks() + progressForm.getCompletedTasks();
 

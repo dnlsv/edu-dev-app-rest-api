@@ -8,7 +8,6 @@ import com.project.models.Progress;
 import com.project.models.State;
 import com.project.models.User;
 import com.project.repositories.ProgressRepository;
-import com.project.repositories.TokensRepository;
 import com.project.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,9 +20,6 @@ public class UsersServiceimpl implements UsersService {
 
   @Autowired
   private UsersRepository usersRepository;
-
-  @Autowired
-  private TokensRepository tokensRepository;
 
   @Autowired
   ProgressRepository progressRepository;
@@ -79,9 +75,6 @@ public class UsersServiceimpl implements UsersService {
 
     if (userCandidate.isPresent()) {
       User user = userCandidate.get();
-//      List<Token> oldTokens = tokensRepository.findAllByUser(user);
-//      tokensRepository.deleteAll(oldTokens);
-
       usersRepository.delete(user);
     } else throw new IllegalArgumentException("User not found!");
   }
