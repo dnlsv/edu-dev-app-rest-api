@@ -6,7 +6,6 @@ import com.project.security.token.TokenAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
 
   @Override
   public Authentication authenticate(Authentication authentication) {
-    TokenAuthentication tokenAuthentication = (TokenAuthentication)authentication;
+    TokenAuthentication tokenAuthentication = (TokenAuthentication) authentication;
     Optional<Token> tokenCandidate = tokensRepository.findOneByValue(tokenAuthentication.getName());
 
     if (tokenCandidate.isPresent()) {

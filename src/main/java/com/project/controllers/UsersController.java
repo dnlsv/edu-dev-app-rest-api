@@ -1,8 +1,8 @@
 package com.project.controllers;
 
 import com.project.forms.ChangePasswordForm;
-import com.project.forms.UniqueForm;
 import com.project.forms.EditForm;
+import com.project.forms.UniqueForm;
 import com.project.forms.UserForm;
 import com.project.services.UsersService;
 import com.project.transfer.UserDto;

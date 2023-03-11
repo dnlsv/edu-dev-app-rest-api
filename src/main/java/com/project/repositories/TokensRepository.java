@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface TokensRepository extends JpaRepository<Token, Integer> {
 
   List<Token> findAllByUser(User user);
+
   Optional<Token> findOneByValue(String value);
 }

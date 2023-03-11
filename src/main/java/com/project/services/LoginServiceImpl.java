@@ -35,9 +35,9 @@ public class LoginServiceImpl implements LoginService {
         List<Token> oldTokens = tokensRepository.findAllByUser(user);
         tokensRepository.deleteAll(oldTokens);
         Token token = Token.builder()
-                .user(user)
-                .value(RandomStringUtils.random(10, true, true))
-                .build();
+            .user(user)
+            .value(RandomStringUtils.random(10, true, true))
+            .build();
         tokensRepository.save(token);
         return token;
       } else throw new IllegalArgumentException("Incorrect login or password!");

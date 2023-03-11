@@ -22,9 +22,9 @@ public class ExceptionFilter extends OncePerRequestFilter {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
       Gson gson = new Gson();
       response.getWriter().write(
-              gson.toJson(ExceptionResponse.builder()
-                      .status(HttpStatus.BAD_REQUEST)
-                      .message(exception.getMessage()).build())
+          gson.toJson(ExceptionResponse.builder()
+              .status(HttpStatus.BAD_REQUEST)
+              .message(exception.getMessage()).build())
       );
     }
   }

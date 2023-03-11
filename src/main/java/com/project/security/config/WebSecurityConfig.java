@@ -31,13 +31,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-            .addFilterBefore(exceptionFilter, ChannelProcessingFilter.class)
-            .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
-            .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
-            .authenticationProvider(tokenAuthenticationProvider)
-            .authorizeRequests()
-            .antMatchers("/login", "/registration").permitAll()
-            .anyRequest().authenticated();
+        .addFilterBefore(exceptionFilter, ChannelProcessingFilter.class)
+        .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
+        .addFilterBefore(tokenAuthenticationFilter, BasicAuthenticationFilter.class)
+        .authenticationProvider(tokenAuthenticationProvider)
+        .authorizeRequests()
+        .antMatchers("/login", "/registration").permitAll()
+        .anyRequest().authenticated();
     http.csrf().disable();
   }
 }

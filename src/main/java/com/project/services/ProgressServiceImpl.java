@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class ProgressServiceImpl implements ProgressService{
+public class ProgressServiceImpl implements ProgressService {
 
   private final int STARS_TO_LEVEL_UP = 100;
 
@@ -39,12 +39,12 @@ public class ProgressServiceImpl implements ProgressService{
         int completedTasks = progress.getCompletedTasks() + progressForm.getCompletedTasks();
 
         Progress updatedProgress = Progress.builder()
-                .id(progressCandidate.get().getId())
-                .level(level)
-                .stars(stars)
-                .completedTasks(completedTasks)
-                .user(userCandidate.get())
-                .build();
+            .id(progressCandidate.get().getId())
+            .level(level)
+            .stars(stars)
+            .completedTasks(completedTasks)
+            .user(userCandidate.get())
+            .build();
 
         progressRepository.save(updatedProgress);
 

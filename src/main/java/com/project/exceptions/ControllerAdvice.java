@@ -14,16 +14,16 @@ public class ControllerAdvice {
   @ExceptionHandler({IllegalArgumentException.class})
   public ResponseEntity<ExceptionResponse> illegalArgumentException(IllegalArgumentException illegalArgumentException) {
     return new ResponseEntity<>(
-            ExceptionResponse.builder().status(HttpStatus.BAD_REQUEST).message(illegalArgumentException.getMessage()).build(),
-            HttpStatus.BAD_REQUEST
+        ExceptionResponse.builder().status(HttpStatus.BAD_REQUEST).message(illegalArgumentException.getMessage()).build(),
+        HttpStatus.BAD_REQUEST
     );
   }
 
   @ExceptionHandler({IOException.class})
   public ResponseEntity<ExceptionResponse> ioException(IOException ioException) {
     return new ResponseEntity<>(
-            ExceptionResponse.builder().status(HttpStatus.BAD_REQUEST).message(ioException.getMessage()).build(),
-            HttpStatus.BAD_REQUEST
+        ExceptionResponse.builder().status(HttpStatus.BAD_REQUEST).message(ioException.getMessage()).build(),
+        HttpStatus.BAD_REQUEST
     );
   }
 }

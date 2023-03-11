@@ -1,8 +1,8 @@
 package com.project.services;
 
 import com.project.forms.ChangePasswordForm;
-import com.project.forms.UniqueForm;
 import com.project.forms.EditForm;
+import com.project.forms.UniqueForm;
 import com.project.forms.UserForm;
 import com.project.models.Progress;
 import com.project.models.State;
@@ -18,18 +18,15 @@ import java.util.Optional;
 @Service
 public class UsersServiceimpl implements UsersService {
 
-  @Autowired
-  private UsersRepository usersRepository;
-
-  @Autowired
-  ProgressRepository progressRepository;
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
   private final int INITIAL_LEVEL = 1;
   private final int INITIAL_STARS = 0;
   private final int INITIAL_TASKS = 0;
+  @Autowired
+  ProgressRepository progressRepository;
+  @Autowired
+  private UsersRepository usersRepository;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Override
   public User addUser(UserForm userForm) {
@@ -39,20 +36,20 @@ public class UsersServiceimpl implements UsersService {
       String hashPassword = passwordEncoder.encode(userForm.getPassword());
 
       User user = User.builder()
-              .firstName(userForm.getFirstName())
-              .lastName(userForm.getLastName())
-              .age(userForm.getAge())
-              .login(userForm.getLogin())
-              .hashPassword(hashPassword)
-              .state(State.ACTIVE)
-              .build();
+          .firstName(userForm.getFirstName())
+          .lastName(userForm.getLastName())
+          .age(userForm.getAge())
+          .login(userForm.getLogin())
+          .hashPassword(hashPassword)
+          .state(State.ACTIVE)
+          .build();
 
       Progress progress = Progress.builder()
-              .level(INITIAL_LEVEL)
-              .stars(INITIAL_STARS)
-              .completedTasks(INITIAL_TASKS)
-              .user(user)
-              .build();
+          .level(INITIAL_LEVEL)
+          .stars(INITIAL_STARS)
+          .completedTasks(INITIAL_TASKS)
+          .user(user)
+          .build();
 
       usersRepository.save(user);
       progressRepository.save(progress);
@@ -85,17 +82,17 @@ public class UsersServiceimpl implements UsersService {
 
     if (userCandidate.isPresent()) {
       if (usersRepository.findOneByLogin(editForm.getNewLogin()).isEmpty() ||
-              editForm.getNewLogin().equals(editForm.getOldLogin())) {
+          editForm.getNewLogin().equals(editForm.getOldLogin())) {
         User user = userCandidate.get();
         User updatedUser = User.builder()
-                .id(user.getId())
-                .firstName(editForm.getFirstName())
-                .lastName(editForm.getLastName())
-                .age(editForm.getAge())
-                .login(editForm.getNewLogin())
-                .hashPassword(user.getHashPassword())
-                .state(user.getState())
-                .build();
+            .id(user.getId())
+            .firstName(editForm.getFirstName())
+            .lastName(editForm.getLastName())
+            .age(editForm.getAge())
+            .login(editForm.getNewLogin())
+            .hashPassword(user.getHashPassword())
+            .state(user.getState())
+            .build();
 
         usersRepository.save(updatedUser);
         return updatedUser;
